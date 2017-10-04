@@ -1,5 +1,5 @@
 cd src
-javac -Xlint:unchecked -source 1.7 -target 1.7 CDDVaultTask.java
+javac -Xlint:unchecked -source 1.8 -target 1.8 CDDVaultTask.java
 jar -cvf ../cddVaultPlugin.jar ../tasknames *.class info/clearthought/layout/*.class org/json/*.class
 rm *.class
 rm info/clearthought/layout/*.class
