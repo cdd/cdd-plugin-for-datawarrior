@@ -198,7 +198,7 @@ public class CDDVaultTask implements IPluginTask {
   }
 
   private String formatTokenForDisplay(String token) {
-    return token.length() == 0 ? EMPTY_TOKEN : "API Key: " + (token.length() > 12 ? token.substring(0, 12) + "..." : token);
+    return token == null || token.length() == 0 ? EMPTY_TOKEN : "API Key: " + (token.length() > 12 ? token.substring(0, 12) + "..." : token);
   }
 
   private void tokenUpdated(String token) {
