@@ -1,10 +1,21 @@
 ## CDD Vault® Plugin for DataWarrior
 
-This file describes Collaborative Drug Discovery, Inc.'s plugin for DataWarrior.  This plugin was originally authored by Thomas Sander.
+CDD Vault® is now connected directly to DataWarrior. This plugin allows you to easily pull chemical and biological data into DataWarrior via CDD Vault® saved searches.  With your data safely and securely stored within CDD Vault, you can take advantage of the wide range of cheminformatics visualization and analysis features in DataWarrior. This plugin was originally authored by Thomas Sander.
 
-CDD Vault® is now connected directly to DataWarrior. This plugin allows you to easily pull chemical and biological data into DataWarrior via CDD Vault® saved searches.  With your data safely and securely stored within CDD Vault, you can take advantage of the wide range of cheminformatics visualization and analysis features in DataWarrior.
+### Installation
+1. [Install DataWarrior](http://www.openmolecules.org/datawarrior/download.html)
+2. Download cddVaultTask.jar from the bottom of [this page](https://support.collaborativedrug.com/hc/en-us/articles/115005330646-API-via-DataWarrior-the-basics) or run buildAll to create cddVaultTask.jar
+3. Move cddVaultTask.jar to the 'plugin' folder within DataWarrior. *This folder should be a top-level folder in the DataWarrior program folder and may need to be created manually.*
 
-### Content
+### Usage
+[Click here for detailed instructions.](https://support.collaborativedrug.com/hc/en-us/articles/115005330646-API-via-DataWarrior-the-basics)
+
+### Notes
+This plugin requires a CDD Vault® API key to function.  You can have the plugin store your API key, in which case the key is stored unencrypted. This option should never be selected when running DataWarrior on a shared machine.
+
+Once a Search and at least one Project and/or Public Dataset is selected, click OK to populate your data into DataWarrior.  This may take some time to complete depending on the size of the results.
+
+### Contents
 
 - readme.md                               : this file
 - src/CDDVaultTask.java                    : the CDD Vault® plugin for DataWarrior
@@ -13,16 +24,3 @@ CDD Vault® is now connected directly to DataWarrior. This plugin allows you to 
 - src/org/json                             : JSON package (see for different license)
 - tasknames                                : contains plugin task names
 - buildAll                                 : short Linux/Mac script to build cddVaultTask.jar from the source
-
-
-### Installation
-1. [Install DataWarrior](http://www.openmolecules.org/datawarrior/download.html)
-2. Download [cddVaultTask.jar](https://support.collaborativedrug.com/hc/en-us/articles/115005330646-API-via-DataWarrior-the-basics) or run buildAll to create cddVaultTask.jar
-3. Move cddVaultTask.jar to the 'plugin' folder within DataWarrior. *This folder should be a top-level folder in the DataWarrior program folder and may need to be created manually.*
-
-### Usage
-[Click here for more detailed instructions.](https://support.collaborativedrug.com/hc/en-us/articles/115005330646-API-via-DataWarrior-the-basics)
-
-This plugin requires a CDD Vault® API key to function.  You can have the plugin store your API key, in which case the key is stored unencrypted. This option should never be selected when running DataWarrior on a shared machine.
-
-Once a Search and at least one Project and/or Public Dataset is selected, click OK to populate your data into DataWarrior.  This may take some time to complete depending on the size of the results.
