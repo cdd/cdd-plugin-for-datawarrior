@@ -1,0 +1,2 @@
+java -cp ./bin:./lib/openchemlib.jar test.CDDPluginTest
+

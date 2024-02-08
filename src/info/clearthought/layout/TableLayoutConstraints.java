@@ -117,10 +117,8 @@
 package info.clearthought.layout;
 
 
-
-import java.util.*;
-
-
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 
 /**
  * TableLayoutConstraints binds components to their constraints.

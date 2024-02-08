@@ -117,12 +117,10 @@
 package info.clearthought.layout;
 
 
-
 import java.awt.*;
-import java.util.*;
-import java.lang.reflect.*;
-
-
+import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * <p>TableLayout is a layout manager that is more powerful than GridBagLayout

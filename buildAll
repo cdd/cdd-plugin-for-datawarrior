@@ -1,8 +1,7 @@
-cd src
-javac -Xlint:unchecked -source 1.8 -target 1.8 CDDVaultTask.java
-jar -cvf ../cddVaultPlugin.jar ../tasknames *.class info/clearthought/layout/*.class org/json/*.class
-rm *.class
-rm info/clearthought/layout/*.class
-rm org/json/*.class
-rm org/openmolecules/datawarrior/plugin/*.class
+rm -rf ./bin
+mkdir ./bin
+javac -Xlint:-options -source 8 -target 8 -d ./bin -sourcepath ./src -cp ./lib/openchemlib.jar src/com/cdd/datawarrior/* src/test/*
+cd ./bin
+# We need to add the json classes, because they were not part of older DataWarrior installations (<= 5.5.0)
+jar -cfM ../cddVaultPlugin.jar ../tasknames com/cdd/datawarrior/*.class org/json/*
 cd ..
