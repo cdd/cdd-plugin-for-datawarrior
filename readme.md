@@ -17,8 +17,8 @@ Once a Search and at least one Project and/or Public Dataset is selected, click 
 
 ### Contents
 
-- readme.md                               : this file
-- src/CDDVaultTask.java                    : the CDD Vault® plugin for DataWarrior
+- readme.md                                : this file
+- src/src/com/cdd/datawarrior              : the CDD Vault® plugin for DataWarrior source files
 - src/info/clearthought/layout             : Clearthought layout partial package (see for different license)
 - src/org/openmolecules/datawarrior/plugin : DataWarrior SDK (see for different license)
 - src/org/json                             : JSON package (see for different license)
