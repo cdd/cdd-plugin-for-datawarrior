@@ -23,4 +23,5 @@ Once a Search and at least one Project and/or Public Dataset is selected, click 
 - src/org/openmolecules/datawarrior/plugin : DataWarrior SDK (see for different license)
 - src/org/json                             : JSON package (see for different license)
 - tasknames                                : contains plugin task names
-- buildAll                                 : short Linux/Mac script to build cddVaultTask.jar from the source
+- buildAll                                 : short Linux/Mac script to build Java class files and cddVaultTask.jar from the source
+- runTest                                  : short Linux/Mac script to test all tasks without the DataWarrior application
