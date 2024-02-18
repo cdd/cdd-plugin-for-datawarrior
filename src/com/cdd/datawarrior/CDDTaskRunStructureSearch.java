@@ -48,8 +48,8 @@ public class CDDTaskRunStructureSearch extends AbstractProjectTask {
 
 	@Override
 	public JComponent createInnerDialogContent(int gap, IUserInterfaceHelper dialogHelper) {
-		final double[][] size = { { TableLayout.PREFERRED, gap/2, TableLayout.PREFERRED, gap, TableLayout.FILL },
-								  { TableLayout.PREFERRED, gap/2, TableLayout.PREFERRED } };
+		final double[][] size = { { TableLayout.PREFERRED, gap>>1, TableLayout.PREFERRED, gap, TableLayout.FILL },
+								  { TableLayout.PREFERRED, gap>>1, TableLayout.PREFERRED } };
 
 		JPanel innerContent = new JPanel();
 		innerContent.setLayout(new TableLayout(size));
@@ -69,10 +69,10 @@ public class CDDTaskRunStructureSearch extends AbstractProjectTask {
 
 	protected JComponent createSimilaritySlider(IUserInterfaceHelper dialogHelper) {
 		Hashtable<Integer,JLabel> labels = new Hashtable<Integer,JLabel>();
-		labels.put(Integer.valueOf(70), new JLabel("70%"));
-		labels.put(Integer.valueOf(80), new JLabel("80%"));
-		labels.put(Integer.valueOf(90), new JLabel("90%"));
-		labels.put(Integer.valueOf(100), new JLabel("100%"));
+		labels.put(70, new JLabel("70%"));
+		labels.put(80, new JLabel("80%"));
+		labels.put(90, new JLabel("90%"));
+		labels.put(100, new JLabel("100%"));
 		mSimilaritySlider = new JSlider(JSlider.VERTICAL, 70, 100, 90);
 		mSimilaritySlider.setMinorTickSpacing(1);
 		mSimilaritySlider.setMajorTickSpacing(10);
@@ -214,7 +214,7 @@ public class CDDTaskRunStructureSearch extends AbstractProjectTask {
 			return;
 		}
 		JSONArray array = result.getJSONArray("objects");
-		if (array == null || array.length() == 0) {
+		if (array == null || array.isEmpty()) {
 			dwInterface.showErrorMessage("Your query didn't return any results.");
 			return;
 		}
@@ -262,9 +262,7 @@ public class CDDTaskRunStructureSearch extends AbstractProjectTask {
 				else {
 					if (title.equals("smiles") && value instanceof String)
 						dwInterface.setCellData(0, i, (String)value);
-					if (!(value instanceof String))
-						value = value.toString();
-					dwInterface.setCellData(titleMap.get(title) + offset, i, (String)value);
+					dwInterface.setCellData(titleMap.get(title) + offset, i, toString(value));
 				}
 			}
 		}

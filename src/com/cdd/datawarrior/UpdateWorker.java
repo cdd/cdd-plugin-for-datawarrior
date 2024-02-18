@@ -4,13 +4,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import java.util.Iterator;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 public class UpdateWorker extends SwingWorker<JSONArray, Object> {
 	private static final String CONNECTION_ERROR_MESSAGE = "Something went wrong during data retrieval.";
 	private static final String[] DEFAULT_KEYS = { "name", "id" };
+	private static final int DEFAULT_KEY_INDEX_FOR_SORTING = 0;
 
 	AbstractTask mParentTask;
 	final String mURL,mMessage;
@@ -68,17 +70,24 @@ public class UpdateWorker extends SwingWorker<JSONArray, Object> {
 			return null;
 		}
 
+		TreeSet<String> nameSet = new TreeSet<>();
+		for (Object o : jsonArray)
+			nameSet.add(((JSONObject)o).get(DEFAULT_KEYS[DEFAULT_KEY_INDEX_FOR_SORTING]).toString());
+		int index = 0;
+		TreeMap<String,Integer> nameToIndexMap = new TreeMap<>();
+		for (String name:nameSet)
+			nameToIndexMap.put(name, index++);
+
 		String[][] table = new String[DEFAULT_KEYS.length][jsonArray.length()];
-		Iterator<Object> objects = jsonArray.iterator();
-		int index2 = 0;
-		while (objects.hasNext()) {
-			JSONObject jsonObject = (JSONObject)objects.next();
-			int index1 = 0;
+		for (Object o : jsonArray) {
+			JSONObject jsonObject = (JSONObject)o;
+			int index1 = nameToIndexMap.get(jsonObject.get(DEFAULT_KEYS[DEFAULT_KEY_INDEX_FOR_SORTING]).toString());
+			int index2 = 0;
 			for (String key:DEFAULT_KEYS) {
-				table[index1++][index2] = jsonObject.get(key).toString();
+				table[index2++][index1] = jsonObject.get(key).toString();
 			}
-			index2++;
 		}
+
 		return table;
 	}
 

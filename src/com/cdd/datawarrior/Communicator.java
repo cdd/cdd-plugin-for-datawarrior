@@ -45,6 +45,7 @@ public class Communicator {
 	}
 
 	public static JSONArray retrieveArray(String url, String token) {
+//System.out.println("retrieveArray() url:"+url);
 		try {
 			return new JSONArray(new JSONTokener(getInputStreamReader(url, token, null, false, true, false)));
 		}
@@ -55,6 +56,7 @@ public class Communicator {
 	}
 
 	public static JSONObject retrieveObject(String url, String token, Properties properties, boolean isPost) {
+//System.out.println("retrieveObject() url:"+url);
 		try {
 			return new JSONObject(new JSONTokener(getInputStreamReader(url, token, properties, isPost, true, false)));
 		} catch (IOException | URISyntaxException e) {

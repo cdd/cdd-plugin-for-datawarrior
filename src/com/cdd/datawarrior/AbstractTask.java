@@ -1,6 +1,8 @@
 package com.cdd.datawarrior;
 
 import info.clearthought.layout.TableLayout;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.openmolecules.datawarrior.plugin.IPluginTask;
 
 import javax.swing.*;
@@ -91,7 +93,18 @@ public abstract class AbstractTask implements IPluginTask {
 		mProgressBar = new JProgressBar();
 		mProgressBar.setIndeterminate(true);
 		mProgressBar.setVisible(false);
-		content.add(mProgressBar, "0,4");
+
+		Dimension pbSize = new Dimension(8*gap, (int)(1.5*gap));
+		mProgressBar.setPreferredSize(pbSize);
+		mProgressBar.setMaximumSize(pbSize);
+		mProgressBar.setMinimumSize(pbSize);
+		mProgressBar.setSize(pbSize);
+
+		JPanel barPanel = new JPanel();
+		double[][] barSize = { { TableLayout.FILL, TableLayout.PREFERRED }, { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL } };
+		barPanel.setLayout(new TableLayout(barSize));
+		barPanel.add(mProgressBar, "1,1");
+		content.add(barPanel, "0,4");
 
 		return content;
 	}
@@ -174,5 +187,64 @@ public abstract class AbstractTask implements IPluginTask {
 				mCurrentVaultID = mVaultID[vaultIndex];
 			}
 		});
+	}
+
+	/**
+	 * Assuming that object is a JSONArray, JSONObject, String or has a reasonable object.toString(),
+	 * this method creates a single- or multi-line String representation of the passed object.
+	 * @param object
+	 * @return
+	 */
+	public String toString(Object object) {
+		if (object instanceof String)
+			return (String)object;
+
+		if (object instanceof JSONArray) {
+			StringBuilder sb = new StringBuilder();
+			appendToString((JSONArray)object, 0, sb);
+			return sb.toString();
+		}
+
+		if (object instanceof JSONObject) {
+			StringBuilder sb = new StringBuilder();
+			appendToString((JSONObject)object, 0, sb);
+			return sb.toString();
+		}
+
+		return object.toString();
+	}
+
+	private void appendToString(JSONArray jsonArray, int depth, StringBuilder sb) {
+		for (Object object:jsonArray) {
+			if (object instanceof JSONArray)
+				appendToString((JSONArray)object, depth+1, sb);
+			else if (object instanceof JSONObject)
+				appendToString((JSONObject)object, depth, sb);
+			else {
+				for (int i=0; i<depth; i++)
+					sb.append("  ");
+				sb.append(object.toString()).append("\n");
+			}
+		}
+	}
+
+	private void appendToString(JSONObject jsonObject, int depth, StringBuilder sb) {
+		for (String key:jsonObject.keySet()) {
+			for (int i=0; i<depth; i++)
+				sb.append("  ");
+			sb.append(key).append(":");
+			Object object = jsonObject.get(key);
+			if (object instanceof JSONArray) {
+				sb.append("\n");
+				appendToString((JSONArray)object, depth+1, sb);
+			}
+			else if (object instanceof JSONObject) {
+				sb.append("\n");
+				appendToString((JSONObject)object, depth+1, sb);
+			}
+			else {
+				sb.append(object.toString()).append("\n");
+			}
+		}
 	}
 }
