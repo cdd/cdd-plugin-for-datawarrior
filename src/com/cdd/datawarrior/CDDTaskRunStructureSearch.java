@@ -24,6 +24,7 @@ public class CDDTaskRunStructureSearch extends AbstractProjectTask {
 	private static final String[] SEARCH_TYPE_CODE = { "sss", "sim" };
 	private static final int SEARCH_TYPE_SSS = 0;
 	private static final int SEARCH_TYPE_SIM = 1;
+	private static final String[] SUPPRESSED_COLUMNS = { "class", "registration_type" ,"cdd_registry_number" };
 
 	public CDDTaskRunStructureSearch() {
 		super(true);
@@ -226,7 +227,7 @@ public class CDDTaskRunStructureSearch extends AbstractProjectTask {
 			for (String key:row.keySet()) {
 				if (key.equals("molfile"))
 					hasMolfile = true;
-				else if (!titleMap.containsKey(key))
+				else if (!titleMap.containsKey(key) && !suppressColumn(key))
 					titleMap.put(key, column++);
 			}
 		}
@@ -259,7 +260,7 @@ public class CDDTaskRunStructureSearch extends AbstractProjectTask {
 					if (value instanceof String)
 						dwInterface.setCellData(0, i, (String)value);
 				}
-				else {
+				else if (titleMap.containsKey(title)) {
 					if (title.equals("smiles") && value instanceof String)
 						dwInterface.setCellData(0, i, (String)value);
 					dwInterface.setCellData(titleMap.get(title) + offset, i, toString(value));
@@ -268,5 +269,13 @@ public class CDDTaskRunStructureSearch extends AbstractProjectTask {
 		}
 
 		dwInterface.finalizeData(null);
+	}
+
+	private boolean  suppressColumn(String title) {
+		for (String suppressedTitle: SUPPRESSED_COLUMNS)
+			if (title.equals(suppressedTitle))
+				return true;
+
+		return false;
 	}
 }

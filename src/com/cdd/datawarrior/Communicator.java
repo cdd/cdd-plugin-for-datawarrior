@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class Communicator {
@@ -37,15 +38,28 @@ public class Communicator {
 
 		InputStream is = connection.getInputStream();
 		if (isZip) {
+			// For saving zip file call writeToTestFile(is) insrtead of the following!!!
 			is = new ZipInputStream(is);
-			((ZipInputStream)is).getNextEntry();
+			ZipEntry entry = ((ZipInputStream)is).getNextEntry();
+			while (entry != null && !entry.getName().endsWith(".sdf"))
+				entry = ((ZipInputStream)is).getNextEntry();
 		}
 
 		return new InputStreamReader(is);
 	}
 
+/*	private static void writeToTestFile(InputStream is) throws IOException {
+		OutputStream os = new FileOutputStream(new File("/home/thomas/temp.zip"));
+		byte[] buffer = new byte[8 * 1024];
+		int bytesRead;
+		while ((bytesRead = is.read(buffer)) != -1) {
+			os.write(buffer, 0, bytesRead);
+		}
+		IOUtils.closeQuietly(is);
+		IOUtils.closeQuietly(os);
+	}   */
+
 	public static JSONArray retrieveArray(String url, String token) {
-//System.out.println("retrieveArray() url:"+url);
 		try {
 			return new JSONArray(new JSONTokener(getInputStreamReader(url, token, null, false, true, false)));
 		}
@@ -56,7 +70,6 @@ public class Communicator {
 	}
 
 	public static JSONObject retrieveObject(String url, String token, Properties properties, boolean isPost) {
-//System.out.println("retrieveObject() url:"+url);
 		try {
 			return new JSONObject(new JSONTokener(getInputStreamReader(url, token, properties, isPost, true, false)));
 		} catch (IOException | URISyntaxException e) {

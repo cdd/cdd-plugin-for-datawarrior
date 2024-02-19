@@ -195,7 +195,7 @@ public abstract class AbstractTask implements IPluginTask {
 	 * @param object
 	 * @return
 	 */
-	public String toString(Object object) {
+	public static String toString(Object object) {
 		if (object instanceof String)
 			return (String)object;
 
@@ -214,7 +214,7 @@ public abstract class AbstractTask implements IPluginTask {
 		return object.toString();
 	}
 
-	private void appendToString(JSONArray jsonArray, int depth, StringBuilder sb) {
+	private static void appendToString(JSONArray jsonArray, int depth, StringBuilder sb) {
 		for (Object object:jsonArray) {
 			if (object instanceof JSONArray)
 				appendToString((JSONArray)object, depth+1, sb);
@@ -228,7 +228,7 @@ public abstract class AbstractTask implements IPluginTask {
 		}
 	}
 
-	private void appendToString(JSONObject jsonObject, int depth, StringBuilder sb) {
+	private static void appendToString(JSONObject jsonObject, int depth, StringBuilder sb) {
 		for (String key:jsonObject.keySet()) {
 			for (int i=0; i<depth; i++)
 				sb.append("  ");

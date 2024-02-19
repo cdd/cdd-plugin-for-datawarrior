@@ -70,7 +70,7 @@ public class UpdateWorker extends SwingWorker<JSONArray, Object> {
 			return null;
 		}
 
-		TreeSet<String> nameSet = new TreeSet<>();
+		TreeSet<String> nameSet = new TreeSet<>((s1,s2) -> s1.compareToIgnoreCase(s2));
 		for (Object o : jsonArray)
 			nameSet.add(((JSONObject)o).get(DEFAULT_KEYS[DEFAULT_KEY_INDEX_FOR_SORTING]).toString());
 		int index = 0;
