@@ -12,14 +12,15 @@ import java.util.Properties;
  * PluginTask to retrieve data from the CDD Vault.
  */
 public abstract class AbstractProjectTask extends AbstractTask {
-	private final String DATASETS_URL = "https://app.collaborativedrug.com/api/v1/vaults/VAULT/data_sets";
-	private final String PROJECTS_URL = "https://app.collaborativedrug.com/api/v1/vaults/VAULT/projects";
-	protected final String PROGRESS_URL = "https://app.collaborativedrug.com/api/v1/vaults/VAULT/export_progress/EXPORT_ID";
-	protected final String RESULT_URL = "https://app.collaborativedrug.com/api/v1/vaults/VAULT/exports/EXPORT_ID";
+	private final String DATASETS_SUFFIX = "VAULT/data_sets";
+	private final String PROJECTS_SUFFIX = "VAULT/projects";
+	protected final String PROGRESS_SUFFIX = "VAULT/export_progress/EXPORT_ID";
+	protected final String RESULT_SUFFIX = "VAULT/exports/EXPORT_ID";
 
 	protected final String CONFIGURATION_PROJECTS = "projects";
 	protected final String CONFIGURATION_DATASETS = "datasets";
 
+	private static String sServerURL;
 	private final boolean mShowDatasets;
 	private JList<String> mListProjects,mListDatasets;
 	private String[] mProjectID,mDatasetID;
@@ -130,7 +131,7 @@ public abstract class AbstractProjectTask extends AbstractTask {
 	}
 
 	private UpdateWorker createUpdateProjectsWorker(String vaultID, Properties configuration) {
-		String url = PROJECTS_URL.replace("VAULT", vaultID);
+		String url = CDDTaskChooseServer.getServerURL().concat(PROJECTS_SUFFIX.replace("VAULT", vaultID));
 		return new UpdateWorker(this, url, "Updating projects...", table -> {
 			mProjectID = table[DEFAULT_ID_INDEX];
 			((DefaultListModel<String>)mListProjects.getModel()).clear();
@@ -160,7 +161,7 @@ public abstract class AbstractProjectTask extends AbstractTask {
 	}
 
 	private UpdateWorker createUpdateDatasetsWorker(String vaultID, Properties configuration) {
-		String url = DATASETS_URL.replace("VAULT", vaultID);
+		String url = CDDTaskChooseServer.getServerURL().concat(DATASETS_SUFFIX.replace("VAULT", vaultID));
 		return new UpdateWorker(this, url, "Updating datasets...", table -> {
 			mDatasetID = table[DEFAULT_ID_INDEX];
 			((DefaultListModel<String>)mListDatasets.getModel()).clear();
@@ -238,10 +239,10 @@ public abstract class AbstractProjectTask extends AbstractTask {
 	}
 
 	/**
-	 * Selects all named items in a list whose ids are in given comma delimited string
+	 * Selects all named items in a list whose ids are in given comma-delimited string
 	 * @param list
 	 * @param keys array with keys matching the current list
-	 * @param keyString comma delimited list of keys to select
+	 * @param keyString comma-delimited list of keys to select
 	 */
 	public void selectColumnsInList(JList<String> list, String[] keys, String keyString) {
 		list.clearSelection();

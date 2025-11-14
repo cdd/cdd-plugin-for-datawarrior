@@ -183,8 +183,8 @@ public class CDDTaskRunStructureSearch extends AbstractProjectTask {
 			return;
 		}
 
-		String progressURL = PROGRESS_URL.replace("VAULT", vault)
-				.replace("EXPORT_ID", so.get("id").toString());
+		String progressURL = CDDTaskChooseServer.getServerURL().concat(PROGRESS_SUFFIX.replace("VAULT", vault)
+				.replace("EXPORT_ID", so.get("id").toString()));
 
 		while (!"finished".equals(so.get("status"))) {
 			if (!"new".equals(so.get("status")) && !"started".equals(so.get("status"))) {
@@ -201,8 +201,8 @@ public class CDDTaskRunStructureSearch extends AbstractProjectTask {
 			try { Thread.sleep(1000); } catch (InterruptedException ie) {}
 		}
 
-		String resultURL = RESULT_URL.replace("VAULT", vault)
-				.replace("EXPORT_ID", so.get("id").toString());
+		String resultURL = CDDTaskChooseServer.getServerURL().concat(RESULT_SUFFIX.replace("VAULT", vault)
+				.replace("EXPORT_ID", so.get("id").toString()));
 
 		retrieveJSON(resultURL, dwInterface);
 	}

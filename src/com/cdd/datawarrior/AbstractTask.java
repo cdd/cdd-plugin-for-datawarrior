@@ -14,7 +14,6 @@ import java.util.Properties;
 public abstract class AbstractTask implements IPluginTask {
 	protected final String CONFIGURATION_VAULT_ID = "vault";
 	private static final String EMPTY_TOKEN = "<no API Key>";
-	private final String VAULT_URL = "https://app.collaborativedrug.com/api/v1/vaults";
 	protected static final int DEFAULT_NAME_INDEX = 0;
 	protected static final int DEFAULT_ID_INDEX = 1;
 
@@ -166,7 +165,7 @@ public abstract class AbstractTask implements IPluginTask {
 	protected abstract void vaultUpdated(String vaultID, Properties configuration);
 
 	private UpdateWorker createUpdateVaultsWorker() {
-		return new UpdateWorker(this, VAULT_URL, "Updating vaults...", table -> {
+		return new UpdateWorker(this, CDDTaskChooseServer.getServerURL(), "Updating vaults...", table -> {
 			mVaultID = table[DEFAULT_ID_INDEX];
 			mComboBoxVaultID.removeAllItems();
 			for (String vaultName : table[DEFAULT_NAME_INDEX])

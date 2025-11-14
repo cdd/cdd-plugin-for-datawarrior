@@ -16,7 +16,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class Communicator {
+	public static int sErrorCode;
+
 	public static InputStreamReader getInputStreamReader(String url, String token, Properties properties, boolean isPost, boolean isJSON, boolean isZip) throws IOException, URISyntaxException {
+		sErrorCode = 0;
 		if (!isPost && properties!=null)
 			for (String key: properties.stringPropertyNames())
 				url = url.concat(url.contains("?") ? "&" : "?").concat(key).concat("=").concat(properties.getProperty(key));
@@ -65,6 +68,8 @@ public class Communicator {
 		}
 		catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
+			if (e.getMessage().contains("401"))
+				sErrorCode = 401;
 			return null;
 		}
 	}
@@ -74,8 +79,9 @@ public class Communicator {
 			return new JSONObject(new JSONTokener(getInputStreamReader(url, token, properties, isPost, true, false)));
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
+			if (e.getMessage().contains("401"))
+				sErrorCode = 401;
 			return null;
 		}
 	}
-
 }

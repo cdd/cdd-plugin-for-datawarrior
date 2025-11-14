@@ -18,8 +18,8 @@ import java.util.TreeMap;
 public class CDDTaskRetrieveSearchResults extends AbstractProjectTask {
 	private final String CONFIGURATION_SEARCH_NAME = "searchName";
 	private final String CONFIGURATION_SEARCH_ID = "searchID";
-	private final String SEARCHES_URL = "https://app.collaborativedrug.com/api/v1/vaults/VAULT/searches";
-	private final String EXPORT_URL = "https://app.collaborativedrug.com/api/v1/vaults/VAULT/exports?search=SEARCH";
+	private final String SEARCHES_SUFFIX = "VAULT/searches";
+	private final String EXPORT_SUFFIX = "VAULT/exports?search=SEARCH";
 	private static final boolean RETRIEVE_SDF = true;
 	private static final boolean RETRIEVE_ZIP = true;
 
@@ -41,7 +41,7 @@ public class CDDTaskRetrieveSearchResults extends AbstractProjectTask {
 	}
 
 	private UpdateWorker createUpdateSearchesWorker(String vaultID, Properties configuration) {
-		String url = SEARCHES_URL.replace("VAULT", vaultID);
+		String url = CDDTaskChooseServer.getServerURL().concat(SEARCHES_SUFFIX.replace("VAULT", vaultID));
 		return new UpdateWorker(this, url, "Updating searches...", table -> {
 			mSearchID = table[DEFAULT_ID_INDEX];
 			mComboBoxSearch.removeAllItems();
@@ -147,7 +147,7 @@ public class CDDTaskRetrieveSearchResults extends AbstractProjectTask {
 		String datasets = configuration.getProperty(CONFIGURATION_DATASETS, "");
 		String searchName = configuration.getProperty(CONFIGURATION_SEARCH_NAME, "CDD Vault® Search");
 
-		String exportURL = EXPORT_URL.replace("VAULT", vault)
+		String exportURL = CDDTaskChooseServer.getServerURL().concat(EXPORT_SUFFIX.replace("VAULT", vault))
 				.replace("SEARCH", searchID);
 
 		if (projects != null && !projects.isEmpty()) {
@@ -175,7 +175,7 @@ public class CDDTaskRetrieveSearchResults extends AbstractProjectTask {
 			return;
 		}
 
-		String progressURL = PROGRESS_URL.replace("VAULT", vault)
+		String progressURL = CDDTaskChooseServer.getServerURL().concat(PROGRESS_SUFFIX.replace("VAULT", vault))
 				.replace("EXPORT_ID", so.get("id").toString());
 
 		while (!"finished".equals(so.get("status"))) {
@@ -193,8 +193,8 @@ public class CDDTaskRetrieveSearchResults extends AbstractProjectTask {
 			try { Thread.sleep(1000); } catch (InterruptedException ie) {}
 		}
 
-		String resultURL = RESULT_URL.replace("VAULT", vault)
-				.replace("EXPORT_ID", so.get("id").toString());
+		String resultURL = CDDTaskChooseServer.getServerURL().concat(RESULT_SUFFIX.replace("VAULT", vault)
+				.replace("EXPORT_ID", so.get("id").toString()));
 
 		if (RETRIEVE_SDF)
 			retrieveSDF(resultURL, searchName, dwInterface);

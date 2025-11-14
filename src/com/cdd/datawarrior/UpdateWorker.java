@@ -11,12 +11,13 @@ import java.util.concurrent.ExecutionException;
 
 public class UpdateWorker extends SwingWorker<JSONArray, Object> {
 	private static final String CONNECTION_ERROR_MESSAGE = "Something went wrong during data retrieval.";
+	private static final String UNAUTHORIZED_ERROR_MESSAGE = "You are not authorized to access this server.";
 	private static final String[] DEFAULT_KEYS = { "name", "id" };
 	private static final int DEFAULT_KEY_INDEX_FOR_SORTING = 0;
 
-	AbstractTask mParentTask;
-	final String mURL,mMessage;
-	final DoneAction mDoneAction;
+	private AbstractTask mParentTask;
+	private final String mURL,mMessage;
+	private final DoneAction mDoneAction;
 
 	public UpdateWorker(AbstractTask parentTask, String url, String message, DoneAction doneAction) {
 		mParentTask = parentTask;
@@ -38,7 +39,8 @@ public class UpdateWorker extends SwingWorker<JSONArray, Object> {
 		try {
 			String[][] table = createTable(get());
 			if (table == null) {
-				JOptionPane.showMessageDialog(null, CONNECTION_ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(mParentTask.getDialog(), Communicator.sErrorCode == 401 ?
+						UNAUTHORIZED_ERROR_MESSAGE : CONNECTION_ERROR_MESSAGE);
 				mParentTask.stopProgress();
 				return;
 			}
